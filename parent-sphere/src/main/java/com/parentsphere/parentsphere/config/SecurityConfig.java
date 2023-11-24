@@ -29,7 +29,7 @@ import java.util.List;
 @EnableWebSecurity
 public class SecurityConfig {
     @Autowired
-    private JwtAuthEntryPoint authenticationEntryPoint;
+    private JwtAuthEntryPoint jwtAuthEntryPoint;
 
     @Autowired
     private JwtAuthFilter authenticationFilter;
@@ -64,15 +64,14 @@ public class SecurityConfig {
         })
                 .authorizeHttpRequests((authorize) ->
                         //authorize.anyRequest().authenticated()
-                        authorize.requestMatchers(HttpMethod.POST,  "/mobile-communication/customers/signup").permitAll()
-                                .requestMatchers(HttpMethod.POST,"/mobile-communication/customers/signin").permitAll()
+                        authorize.requestMatchers(HttpMethod.POST,  "/parent-sphere/signup").permitAll()
+                                .requestMatchers(HttpMethod.POST,"/parent-sphere/signin").permitAll()
 
 
 
                                 .anyRequest().authenticated()
 
-                ).exceptionHandling( exception -> exception
-                        .authenticationEntryPoint(authenticationEntryPoint)
+                ).exceptionHandling( exception -> exception.accessDeniedHandler(jwtAccessDeniedHandler).authenticationEntryPoint(jwtAuthEntryPoint)
                 ).sessionManagement( session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 );
