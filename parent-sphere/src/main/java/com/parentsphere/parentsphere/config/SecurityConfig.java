@@ -12,6 +12,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -27,6 +28,7 @@ import java.util.List;
 @Slf4j
 @Configuration
 @EnableWebSecurity
+@EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfig {
     @Autowired
     private JwtAuthEntryPoint jwtAuthEntryPoint;
@@ -64,20 +66,20 @@ public class SecurityConfig {
         })
                 .authorizeHttpRequests((authorize) ->
                         //authorize.anyRequest().authenticated()
-                        authorize.requestMatchers(HttpMethod.POST,  "/parent-sphere/signup").permitAll()
-                                .requestMatchers(HttpMethod.POST,"/parent-sphere/signin").permitAll()
+                        authorize.requestMatchers(HttpMethod.POST,  "/parent-sphere/users/signup").permitAll()
+                                .requestMatchers(HttpMethod.POST,"/parent-sphere/users/signin").permitAll()
 
 
 
                                 .anyRequest().authenticated()
 
-                ).exceptionHandling( exception -> exception.accessDeniedHandler(jwtAccessDeniedHandler).authenticationEntryPoint(jwtAuthEntryPoint)
+                ).exceptionHandling( exception -> exception.authenticationEntryPoint(jwtAuthEntryPoint).accessDeniedHandler(jwtAccessDeniedHandler)
                 ).sessionManagement( session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 );
-        log.info("about to go to filter 1");
+
         http.addFilterBefore(authenticationFilter, UsernamePasswordAuthenticationFilter.class);
-        log.info("about to go to filter 2");
+
 
         return http.build();
     }}

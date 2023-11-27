@@ -32,7 +32,7 @@ import static org.springframework.http.MediaType.IMAGE_JPEG_VALUE;
 
 
 @RestController
-@RequestMapping(path = { "/", "/user"})
+@RequestMapping("/parent-sphere/users")
 public class UserController extends ExceptionHandling {
     public static final String EMAIL_SENT = "An email with a new password was sent to: ";
     public static final String USER_DELETED_SUCCESSFULLY = "User deleted successfully";
@@ -48,7 +48,7 @@ public class UserController extends ExceptionHandling {
 
 
 
-    @PostMapping("/login")
+    @PostMapping("/signin")
     public ResponseEntity<User> login(@RequestBody User user) {
         authenticate(user.getUsername(), user.getPassword());
         User loginUser = userService.findUserByUsername(user.getUsername());
@@ -58,7 +58,7 @@ public class UserController extends ExceptionHandling {
     }
 
 
-    @PostMapping("/register")
+    @PostMapping("/signup")
     public ResponseEntity<User> register(@RequestBody User user) throws UserNotFoundException, UsernameExistException, EmailExistException, MessagingException {
         User newUser = userService.register(user.getFirstName(), user.getLastName(), user.getUsername(), user.getEmail());
         return new ResponseEntity<>(newUser, OK);

@@ -19,11 +19,10 @@ public class Comment {
     @Column(length = 1000)
     private String content;
 
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date date;
+
 
     // Relationship with Post
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "post_id")
     private Post post;
 

@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -33,5 +34,5 @@ public class Post {
 
 
     @OneToMany(mappedBy = "post")
-    private Set<Comment> comments;
+    private Set<Comment> comments = new HashSet<>();
 }
