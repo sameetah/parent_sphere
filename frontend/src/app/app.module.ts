@@ -1,30 +1,33 @@
-import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core'
-import { RouterModule } from '@angular/router'
-import { BrowserModule } from '@angular/platform-browser'
+import { NgModule } from '@angular/core';
+import { BrowserModule } from '@angular/platform-browser';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 
-import { ComponentsModule } from './components/components.module'
-import { AppComponent } from './app.component'
-
-const routes = [
-  {
-    path: '',
-    loadChildren: () =>
-      import('./pages/home/home.module').then((m) => m.HomeModule),
-  },
-  {
-    path: '**',
-    loadChildren: () =>
-      import('./pages/not-found/not-found.module').then(
-        (m) => m.NotFoundModule
-      ),
-  },
-]
+import { AppComponent } from './app.component';
+import { CoreModule } from './core/core.module';
+import { NotifierModule } from 'angular-notifier';
+import { RouterModule } from '@angular/router';
+import { NotificationService } from './user/services/notification.service';
+import { AuthInterceptor } from './user/interceptor/auth.interceptor';
+import { AuthenticationService } from './user/services/authentication.service';
+import { UserService } from './user/services/user.service';
+import { PermissionsService } from './user/services/permissions.service';
 
 @NgModule({
   declarations: [AppComponent],
-  imports: [BrowserModule, RouterModule.forRoot(routes), ComponentsModule],
-  providers: [],
+  imports: [
+    BrowserModule,
+    CoreModule,
+    HttpClientModule,
+    NotifierModule,
+    RouterModule,
+  ],
+  providers: [
+    NotificationService,
+    PermissionsService,
+    AuthenticationService,
+    UserService,
+    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
+  ],
   bootstrap: [AppComponent],
-  schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
 export class AppModule {}
