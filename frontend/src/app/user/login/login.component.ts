@@ -33,41 +33,37 @@ export class LoginComponent implements OnInit, OnDestroy {
   public onLogin(user: User): void {
     this.showLoading = true;
     this.subscriptions.push(
-      this.authenticationService.login(user).subscribe(
-        (response: HttpResponse<User>) => {
+      this.authenticationService.login(user).subscribe({
+        next: (response: HttpResponse<User>) => {
           const token = response.headers.get(HeaderType.JWT_TOKEN);
           if (token) {
             this.authenticationService.saveToken(token);
+            const userFromBody = response.body;
+            if (userFromBody) {
+              this.authenticationService.addUserToLocalCache(userFromBody);
+              this.router.navigateByUrl('/user/management');
+            } else {
+              this.sendErrorNotification(
+                NotificationType.ERROR,
+                'User data is missing'
+              );
+            }
           } else {
-            // Handle the case where the token is null
             this.sendErrorNotification(
               NotificationType.ERROR,
               'No token received'
             );
           }
-
-          const userFromBody = response.body;
-          if (userFromBody) {
-            this.authenticationService.addUserToLocalCache(userFromBody);
-            this.router.navigateByUrl('/user/management');
-          } else {
-            // Handle the case where the user data is null
-            this.sendErrorNotification(
-              NotificationType.ERROR,
-              'User data is missing'
-            );
-          }
-
           this.showLoading = false;
         },
-        (errorResponse: HttpErrorResponse) => {
+        error: (errorResponse: HttpErrorResponse) => {
           this.sendErrorNotification(
             NotificationType.ERROR,
             errorResponse.error.message
           );
           this.showLoading = false;
-        }
-      )
+        },
+      })
     );
   }
 

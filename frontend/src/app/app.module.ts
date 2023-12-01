@@ -12,6 +12,7 @@ import { AuthenticationService } from './user/services/authentication.service';
 import { UserService } from './user/services/user.service';
 import { PermissionsService } from './user/services/permissions.service';
 import { FormsModule } from '@angular/forms';
+import { NotificationModule } from './notification.module';
 const routes: Routes = [
   {
     path: 'user',
@@ -26,7 +27,7 @@ const routes: Routes = [
     CoreModule,
     FormsModule,
     HttpClientModule,
-    NotifierModule,
+    NotificationModule,
     RouterModule.forRoot(routes),
   ],
   providers: [
