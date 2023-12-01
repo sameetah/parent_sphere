@@ -13,28 +13,17 @@ import { AuthenticationService } from '../services/authentication.service';
 })
 export class AuthInterceptor implements HttpInterceptor {
   constructor(private authenticationService: AuthenticationService) {}
-
   intercept(
-    httpRequest: HttpRequest<any>,
-    httpHandler: HttpHandler
+    req: HttpRequest<any>,
+    next: HttpHandler
   ): Observable<HttpEvent<any>> {
-    if (
-      httpRequest.url.includes(`${this.authenticationService.host}/user/login`)
-    ) {
-      return httpHandler.handle(httpRequest);
-    }
-    if (
-      httpRequest.url.includes(
-        `${this.authenticationService.host}/user/register`
-      )
-    ) {
-      return httpHandler.handle(httpRequest);
-    }
     this.authenticationService.loadToken();
     const token = this.authenticationService.getToken();
-    const request = httpRequest.clone({
-      setHeaders: { Authorization: `Bearer ${token}` },
-    });
-    return httpHandler.handle(request);
+    const authReq = token
+      ? req.clone({
+          headers: req.headers.set('Authorization', `Bearer ${token}`),
+        })
+      : req;
+    return next.handle(authReq);
   }
 }

@@ -36,15 +36,14 @@ export class RegisterComponent implements OnInit, OnDestroy {
           this.showLoading = false;
           this.sendNotification(
             NotificationType.SUCCESS,
-            `A new account was created for ${response.firstName}.
-          Please check your email for password to log in.`
+            `A new account was created for ${response.firstName}. Please check your email for password to log in.`
           );
         },
         (errorResponse: HttpErrorResponse) => {
-          this.sendNotification(
-            NotificationType.ERROR,
-            errorResponse.error.message
-          );
+          // Check if errorResponse.error and errorResponse.error.message are not null
+          const errorMessage =
+            errorResponse.error?.message || 'An unexpected error occurred';
+          this.sendNotification(NotificationType.ERROR, errorMessage);
           this.showLoading = false;
         }
       )
