@@ -4,7 +4,7 @@ export class User {
   public lastName: string;
   public username: string;
   public email: string;
-
+  public password: string;
   public profileImageUrl: string;
 
   public role: string;
@@ -18,7 +18,7 @@ export class User {
     this.email = '';
 
     this.profileImageUrl = '';
-
+    this.password = '';
     this.role = '';
     this.authorities = [];
   }
