@@ -6,11 +6,18 @@ module.exports = {
     "./src/**/*.{html,ts,css}",
   ],
   theme: {
-    colors: {  ...defaultTheme.colors, // Spread the default colors
-    'blue': '#89ABE3FF', 
-    'rose': '#D7B6C2', 
-    'cream': '#F5F5F5FF',
-    'gray': '#A2A2A1FF',},
+    colors: {
+      blue: {
+        DEFAULT: '#89ABE3FF', 
+        dark: '#5078B3'
+      },
+      rose: {
+        DEFAULT: '#D7B6C2', 
+        dark: '#B5949D' 
+      },
+      cream: '#F5F5F5FF', 
+      gray: '#A2A2A1FF' 
+    },
     extend: {
       fontFamily: {
         sans: ['Inter var', ...defaultTheme.fontFamily.sans],

@@ -1,0 +1,99 @@
+<div class="container mx-auto p-4">
+  <button
+    class="bg-rose hover:bg-rose-dark text-white font-bold py-2 px-4 rounded mb-4"
+    (click)="toggleForumForm()"
+  >
+    Create New Forum
+  </button>
+
+  <div
+    *ngIf="showForumForm"
+    class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4"
+  >
+    <h2 class="block text-gray-900 text-xl font-bold mb-2">Create New Forum</h2>
+    <form (ngSubmit)="submitNewForum()">
+      <div class="mb-4">
+        <label
+          class="block text-gray-900 text-sm font-bold mb-2"
+          for="forumTitle"
+        >
+          Forum Title
+        </label>
+        <input
+          [(ngModel)]="newForumTitle"
+          name="title"
+          type="text"
+          placeholder="Enter forum title"
+          class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-900 leading-tight focus:outline-none focus:shadow-outline"
+        />
+      </div>
+      <button
+        type="submit"
+        class="bg-rose hover:bg-rose-dark text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+      >
+        Create
+      </button>
+    </form>
+  </div>
+
+  <div class="mb-4">
+    <button
+      class="bg-gray hover:bg-gray-dark text-white font-semibold py-2 px-4 rounded inline-flex items-center"
+      (click)="sortForums('title')"
+    >
+      Sort by Title
+    </button>
+    <button
+      class="bg-gray hover:bg-gray-dark text-white font-semibold py-2 px-4 rounded inline-flex items-center"
+      (click)="sortForums('topics')"
+    >
+      Sort by Topics
+    </button>
+  </div>
+
+  <table class="min-w-full table-auto">
+    <thead>
+      <tr class="bg-cream">
+        <th
+          class="px-6 py-3 text-left text-xs font-medium text-gray-900 uppercase tracking-wider"
+        >
+          Forum Title
+        </th>
+        <th
+          class="px-6 py-3 text-left text-xs font-medium text-gray-900 uppercase tracking-wider"
+        >
+          Topics
+        </th>
+        <th
+          class="px-6 py-3 text-left text-xs font-medium text-gray-900 uppercase tracking-wider"
+        >
+          Posts
+        </th>
+        <th
+          class="px-6 py-3 text-left text-xs font-medium text-gray-900 uppercase tracking-wider"
+        >
+          Last Activity
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let forum of forums" class="bg-white border-b cursor-pointer">
+        <td
+          class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900"
+          (click)="forum.id !== undefined ? navigateToForum(forum.id) : null"
+        >
+          {{ forum.title }}
+        </td>
+        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+          forum.topics.length
+        </td>
+        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+          forum.postsCount
+        </td>
+        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+          forum.lastActivity | date
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

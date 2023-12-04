@@ -18,6 +18,11 @@ const routes: Routes = [
     path: 'user',
     loadChildren: () => import('./user/user.module').then((m) => m.UserModule),
   },
+  {
+    path: 'community',
+    loadChildren: () =>
+      import('./community/community.module').then((m) => m.CommunityModule),
+  },
 ];
 
 @NgModule({
