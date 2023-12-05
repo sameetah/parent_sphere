@@ -21,7 +21,7 @@ public class Comment {
 
 
 
-    // Relationship with Post
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "post_id")
     private Post post;

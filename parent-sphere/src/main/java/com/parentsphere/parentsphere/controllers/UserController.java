@@ -6,6 +6,7 @@ import com.parentsphere.parentsphere.exceptions.*;
 import com.parentsphere.parentsphere.security.JwtTokenProvider;
 import com.parentsphere.parentsphere.security.UserPrincipal;
 import com.parentsphere.parentsphere.services.UserService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -31,6 +32,8 @@ import static org.springframework.http.HttpStatus.OK;
 import static org.springframework.http.MediaType.IMAGE_JPEG_VALUE;
 
 
+
+@Slf4j
 @RestController
 @RequestMapping("/parent-sphere/users")
 public class UserController extends ExceptionHandling {
@@ -54,13 +57,16 @@ public class UserController extends ExceptionHandling {
         User loginUser = userService.findUserByUsername(user.getUsername());
         UserPrincipal userPrincipal = new UserPrincipal(loginUser);
         HttpHeaders jwtHeader = getJwtHeader(userPrincipal);
+        log.info("the jwttoken is " + jwtHeader);
         return new ResponseEntity<>(loginUser, jwtHeader, OK);
     }
 
 
     @PostMapping("/signup")
     public ResponseEntity<User> register(@RequestBody User user) throws UserNotFoundException, UsernameExistException, EmailExistException, MessagingException {
-        User newUser = userService.register(user.getFirstName(), user.getLastName(), user.getUsername(), user.getEmail());
+        log.info(user.getPassword());
+        User newUser = userService.register(user.getFirstName(), user.getLastName(), user.getUsername(), user.getEmail(), user.getPassword());
+
         return new ResponseEntity<>(newUser, OK);
     }
     @PostMapping("/add")

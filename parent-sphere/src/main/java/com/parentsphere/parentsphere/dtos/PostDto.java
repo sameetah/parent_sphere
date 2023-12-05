@@ -4,15 +4,17 @@ import lombok.*;
 
 import java.util.Date;
 
+
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class ForumDto {
-    private long id;
-    private String title;
+public class PostDto {
+    private Long id;
 
-
-
+    private String content;
+    private Date date;
+    private Long authorId;
+    private Long forumId;
 }

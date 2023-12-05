@@ -51,8 +51,7 @@ public class User {
     private Set<Event> events;
 
 
-    @ManyToMany(mappedBy = "members")
-    private Set<Group> groups;
+
 
 
     private boolean isNotLocked;

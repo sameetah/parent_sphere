@@ -19,7 +19,7 @@ public class Post {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String title;
+
 
     @Column(length = 5000)
     private String content;
@@ -35,4 +35,9 @@ public class Post {
 
     @OneToMany(mappedBy = "post")
     private Set<Comment> comments = new HashSet<>();
+
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "forum_id")
+    private Forum forum;
 }

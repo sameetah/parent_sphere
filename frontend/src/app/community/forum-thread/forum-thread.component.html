@@ -1,1 +1,70 @@
-<p>forum-thread works!</p>
+<div class="container mx-auto p-4">
+  <div class="mb-4">
+    <h2 class="text-2xl font-semibold text-gray-900">Forum Thread</h2>
+    <button
+      class="bg-blue hover:bg-blue-dark text-white font-bold py-2 px-4 rounded mt-4"
+      (click)="toggleNewThreadForm()"
+    >
+      Create New Thread
+    </button>
+  </div>
+
+  <div *ngIf="showNewThreadForm" class="mb-4 bg-cream p-4 rounded shadow">
+    <h3 class="text-lg font-semibold text-gray-900 mb-2">New Thread</h3>
+    <form (ngSubmit)="submitNewThread()">
+      <div class="mb-4">
+        <input
+          id="threadTitle"
+          type="text"
+          name="content"
+          [(ngModel)]="newThreadTitle"
+          placeholder="Enter thread title"
+          class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+          required
+        />
+      </div>
+
+      <!-- Add more fields as necessary -->
+
+      <button
+        type="submit"
+        class="bg-blue hover:bg-blue-dark text-white font-bold py-2 px-4 rounded"
+      >
+        Create Thread
+      </button>
+    </form>
+  </div>
+  <div class="space-y-4">
+    <!-- Loop through each post in the thread -->
+    <div *ngFor="let post of posts" class="bg-cream p-4 rounded shadow">
+      <h3 class="text-xl text-blue font-bold">{{ post.content }}</h3>
+
+      <div class="text-sm text-gray-600">
+        Posted by: User {{ post.authorId }} on {{ post.date | date }}
+      </div>
+    </div>
+  </div>
+
+  <!-- Pagination Controls -->
+  <div class="flex justify-between items-center mt-6">
+    <button
+      class="bg-rose hover:bg-rose-dark text-white font-bold py-2 px-4 rounded"
+      (click)="previousPage()"
+      [disabled]="postResponse.pageNo === 0"
+    >
+      Previous
+    </button>
+
+    <span class="text-gray-700">
+      Page {{ postResponse.pageNo + 1 }} of {{ postResponse.totalPages }}
+    </span>
+
+    <button
+      class="bg-rose hover:bg-rose-dark text-white font-bold py-2 px-4 rounded"
+      (click)="nextPage()"
+      [disabled]="postResponse.last"
+    >
+      Next
+    </button>
+  </div>
+</div>

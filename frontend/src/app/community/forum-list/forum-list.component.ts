@@ -38,6 +38,7 @@ export class ForumListComponent implements OnInit {
     this.forumService.createForum(newForum).subscribe({
       next: (response) => {
         this.newForumTitle = '';
+        this.forums.push(response);
         console.log('Forum created successfully:', response);
       },
       error: (error) => {
@@ -51,6 +52,6 @@ export class ForumListComponent implements OnInit {
 
   navigateToForum(forumId: number) {
     this.forumService.getForumById(forumId);
-    this.router.navigate(['/forum-details', forumId]); // Adjust route as needed
+    this.router.navigate(['/community/forums', forumId]);
   }
 }
