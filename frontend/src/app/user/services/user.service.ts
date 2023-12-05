@@ -18,6 +18,10 @@ export class UserService {
     return this.http.get<User[]>(`${this.host}/user/list`);
   }
 
+  public getUserById(id: number): Observable<User> {
+    return this.http.get<User>(`${this.host}/users/${id}`);
+  }
+
   public addUser(formData: FormData): Observable<User> {
     return this.http.post<User>(`${this.host}/user/add`, formData);
   }

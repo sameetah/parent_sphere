@@ -3,6 +3,7 @@ import { PostResponse } from '../models/postResponse';
 import { ForumService } from '../forum.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { PostDto } from '../models/postDto';
+import { UserService } from 'src/app/user/services/user.service';
 
 @Component({
   selector: 'app-forum-thread',
@@ -18,6 +19,7 @@ export class ForumThreadComponent implements OnInit {
     totalPages: 0,
     last: true,
   };
+  userId: number[] = [];
   forumId!: number;
   posts: PostDto[] = [];
   showNewThreadForm = false;
@@ -25,23 +27,37 @@ export class ForumThreadComponent implements OnInit {
 
   constructor(
     private forumService: ForumService,
+    private userService: UserService,
     private route: ActivatedRoute
   ) {}
 
   ngOnInit(): void {
     this.route.params.subscribe((params) => {
       this.forumId = +params['id'];
+      // Fetch posts after getting the forumId
+      this.fetchPosts();
+      console.log(this.forumId);
     });
+    this.forumService.posts$.subscribe((posts) => {
+      this.posts = posts;
+      this.userId = posts
+        .filter((post) => post.authorId !== undefined)
+        .map((post) => post.authorId as number);
+
+      console.log('User IDs:', this.userId);
+    });
+  }
+  fetchPosts(): void {
     this.forumService.getInitialPosts().subscribe({
       next: (response: PostResponse) => {
         this.postResponse = response;
+        this.forumService.updatePosts(response.content);
       },
       error: (error) => {
         console.error('Error loading initial posts:', error);
       },
     });
   }
-
   toggleNewThreadForm() {
     this.showNewThreadForm = !this.showNewThreadForm;
   }
