@@ -22,6 +22,10 @@ export class UserService {
     return this.http.get<User>(`${this.host}/users/${id}`);
   }
 
+  public fetchImage(url: string): Observable<Blob> {
+    return this.http.get(url, { responseType: 'blob' });
+  }
+
   public addUser(formData: FormData): Observable<User> {
     return this.http.post<User>(`${this.host}/user/add`, formData);
   }

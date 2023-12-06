@@ -2,7 +2,7 @@
   <div class="mb-4">
     <h2 class="text-2xl font-semibold text-gray-900">Forum Thread</h2>
     <button
-      class="bg-blue hover:bg-blue-dark text-white font-bold py-2 px-4 rounded mt-4"
+      class="bg-rose hover:bg-blue-dark text-white font-bold py-2 px-4 rounded mt-4"
       (click)="toggleNewThreadForm()"
     >
       Create New Thread
@@ -44,9 +44,9 @@
       <div class="flex items-center">
         <!-- User Avatar -->
         <img
+          class="h-16 w-16 rounded-full object-cover border-4 border-rose shadow-sm mr-4"
           [src]="post.userDto?.profileImageUrl"
           alt="User Avatar"
-          class="avatar"
         />
 
         <!-- Post Content -->
