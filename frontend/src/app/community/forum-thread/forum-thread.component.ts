@@ -40,11 +40,6 @@ export class ForumThreadComponent implements OnInit {
     });
     this.forumService.posts$.subscribe((posts) => {
       this.posts = posts;
-      this.userId = posts
-        .filter((post) => post.authorId !== undefined)
-        .map((post) => post.authorId as number);
-
-      console.log('User IDs:', this.userId);
     });
   }
   fetchPosts(): void {

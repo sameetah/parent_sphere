@@ -15,6 +15,6 @@ public class PostDto {
 
     private String content;
     private Date date;
-    private Long authorId;
+    private String username;
     private Long forumId;
 }
