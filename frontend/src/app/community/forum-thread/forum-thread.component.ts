@@ -19,7 +19,7 @@ export class ForumThreadComponent implements OnInit {
     totalPages: 0,
     last: true,
   };
-  userId: number[] = [];
+
   forumId!: number;
   posts: PostDto[] = [];
   showNewThreadForm = false;

@@ -1,5 +1,6 @@
 package com.parentsphere.parentsphere.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -27,15 +28,13 @@ public class Post {
     @Temporal(TemporalType.TIMESTAMP)
     private Date date;
 
-
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User author;
 
 
-    @OneToMany(mappedBy = "post")
-    private Set<Comment> comments = new HashSet<>();
-
+    @OneToMany(mappedBy = "post", fetch = FetchType.LAZY)
+    private Set<Comment> comments;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "forum_id")

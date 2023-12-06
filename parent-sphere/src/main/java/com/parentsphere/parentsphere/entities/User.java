@@ -1,5 +1,6 @@
 package com.parentsphere.parentsphere.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -39,17 +40,16 @@ public class User {
     private String[] authorities;
 
 
-    @OneToMany(mappedBy = "author")
+    @OneToMany(mappedBy = "author", fetch = FetchType.LAZY)
     private Set<Post> posts;
 
-
-    @OneToMany(mappedBy = "author")
+    @OneToMany(mappedBy = "author", fetch = FetchType.LAZY)
     private Set<Comment> comments;
 
 
-    @OneToMany(mappedBy = "organizer")
-    private Set<Event> events;
 
+    @OneToMany(mappedBy = "organizer", fetch = FetchType.LAZY)
+    private Set<Event> events;
 
 
 

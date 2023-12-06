@@ -12,17 +12,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
 
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring", uses = UserMapper.class)
 public abstract class PostMapper {
 
-    @Autowired
-    private UserService userService;
 
-    @Mapping(target = "username", source = "author.username")
+
+    @Mapping(target = "userDto", source = "author")
     @Mapping(source = "forum.id", target = "forumId")
     public abstract PostDto postToPostDto(Post post);
 
     @Mapping(source = "forumId", target = "forum.id")
+    @Mapping(target = "author", source = "userDto")
     public abstract Post postDtoToPost(PostDto postDto);
 
     public abstract List<PostDto> postsToPostDtos(List<Post> posts);
