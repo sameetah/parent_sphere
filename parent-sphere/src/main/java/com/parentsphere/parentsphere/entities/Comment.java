@@ -1,5 +1,6 @@
 package com.parentsphere.parentsphere.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 import java.util.Date;
@@ -21,12 +22,13 @@ public class Comment {
 
 
 
+    @JsonIgnore
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "post_id")
     private Post post;
 
-    // Relationship with User
+   @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User author;

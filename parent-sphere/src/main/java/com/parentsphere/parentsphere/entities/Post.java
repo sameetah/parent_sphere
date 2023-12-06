@@ -28,6 +28,8 @@ public class Post {
     @Temporal(TemporalType.TIMESTAMP)
     private Date date;
 
+
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User author;
@@ -36,6 +38,8 @@ public class Post {
     @OneToMany(mappedBy = "post", fetch = FetchType.LAZY)
     private Set<Comment> comments;
 
+
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "forum_id")
     private Forum forum;

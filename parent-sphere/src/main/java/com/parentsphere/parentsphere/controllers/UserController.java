@@ -138,18 +138,24 @@ public class UserController extends ExceptionHandling {
     }
 
     @GetMapping(path = "/image/profile/{username}", produces = IMAGE_JPEG_VALUE)
-    public byte[] getTempProfileImage(@PathVariable("username") String username) throws IOException {
-        URL url = new URL(TEMP_PROFILE_IMAGE_BASE_URL + username);
-        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-        try (InputStream inputStream = url.openStream()) {
-            int bytesRead;
-            byte[] chunk = new byte[1024];
-            while((bytesRead = inputStream.read(chunk)) > 0) {
-                byteArrayOutputStream.write(chunk, 0, bytesRead);
+    public byte[] getTempProfileImage(@PathVariable("username") String username) {
+        try {
+            URL url = new URL(TEMP_PROFILE_IMAGE_BASE_URL + username);
+            ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+            try (InputStream inputStream = url.openStream()) {
+                int bytesRead;
+                byte[] chunk = new byte[1024];
+                while ((bytesRead = inputStream.read(chunk)) > 0) {
+                    byteArrayOutputStream.write(chunk, 0, bytesRead);
+                }
             }
+            return byteArrayOutputStream.toByteArray();
+        } catch (IOException e) {
+            // Log more detailed error information here
+            throw new RuntimeException("Error retrieving profile image", e);
         }
-        return byteArrayOutputStream.toByteArray();
     }
+
 
     private ResponseEntity<HttpResponse> response(HttpStatus httpStatus, String message) {
         return new ResponseEntity<>(new HttpResponse(httpStatus.value(), httpStatus, httpStatus.getReasonPhrase().toUpperCase(),
