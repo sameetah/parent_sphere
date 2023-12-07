@@ -101,9 +101,10 @@
               />
             </svg>
           </button>
+          <!-- forum-thread.component.html -->
 
           <!-- Delete Button -->
-          <button
+          <!--          <button
             (click)="deletePost(post)"
             class="text-gray-600 hover:text-red-500 transition"
           >
@@ -121,7 +122,13 @@
                 d="M6 18L18 6M6 6l12 12"
               />
             </svg>
-          </button>
+          </button> -->
+        </div>
+      </div>
+      <div *ngIf="selectedPostForComment" class="mt-4">
+        <div class="post-detail-container mx-auto">
+          <button (click)="selectedPostForComment = null">Close</button>
+          <app-post-detail [post]="selectedPostForComment"></app-post-detail>
         </div>
       </div>
     </div>

@@ -13,9 +13,8 @@ import { NotificationService } from 'src/app/user/services/notification.service'
   styleUrls: ['./forum-thread.component.css'],
 })
 export class ForumThreadComponent implements OnInit, OnDestroy {
-  commentOnPost(_t23: PostDto) {
-    throw new Error('Method not implemented.');
-  }
+  selectedPostForComment: PostDto | null = null;
+
   bookmarkPost(_t23: PostDto) {
     throw new Error('Method not implemented.');
   }
@@ -40,7 +39,9 @@ export class ForumThreadComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private notificationService: NotificationService
   ) {}
-
+  commentOnPost(post: PostDto): void {
+    this.selectedPostForComment = post;
+  }
   ngOnInit(): void {
     this.route.params.pipe(takeUntil(this.destroy$)).subscribe((params) => {
       this.forumId = +params['id'];
