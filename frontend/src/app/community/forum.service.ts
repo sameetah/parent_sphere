@@ -14,7 +14,9 @@ export class ForumService {
   private postsSubject = new BehaviorSubject<PostDto[]>([]);
   posts$: Observable<PostDto[]> = this.postsSubject.asObservable();
   constructor(private http: HttpClient) {}
-
+  deletePostById(postId: number) {
+    return this.http.delete(`${this.host}/posts/${postId}`);
+  }
   updatePosts(posts: PostDto[]): void {
     this.postsSubject.next(posts);
   }

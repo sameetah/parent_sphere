@@ -1,10 +1,11 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { PostResponse } from '../models/postResponse';
 import { ForumService } from '../forum.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { PostDto } from '../models/postDto';
 import { UserService } from 'src/app/user/services/user.service';
 import { Subject, takeUntil } from 'rxjs';
+import { NotificationService } from 'src/app/user/services/notification.service';
 
 @Component({
   selector: 'app-forum-thread',
@@ -12,6 +13,12 @@ import { Subject, takeUntil } from 'rxjs';
   styleUrls: ['./forum-thread.component.css'],
 })
 export class ForumThreadComponent implements OnInit, OnDestroy {
+  commentOnPost(_t23: PostDto) {
+    throw new Error('Method not implemented.');
+  }
+  bookmarkPost(_t23: PostDto) {
+    throw new Error('Method not implemented.');
+  }
   private destroy$ = new Subject<void>();
   postResponse: PostResponse = {
     content: [],
@@ -30,7 +37,8 @@ export class ForumThreadComponent implements OnInit, OnDestroy {
   constructor(
     private forumService: ForumService,
     private userService: UserService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private notificationService: NotificationService
   ) {}
 
   ngOnInit(): void {
@@ -49,16 +57,17 @@ export class ForumThreadComponent implements OnInit, OnDestroy {
             this.userService
               .fetchImage(post.userDto.profileImageUrl)
               .pipe(takeUntil(this.destroy$))
-              .subscribe(
-                (blob) => {
+              .subscribe({
+                next: (blob) => {
                   const objectURL = URL.createObjectURL(blob);
                   post.userDto!.profileImageUrl = objectURL;
                 },
-                (error) => {
+
+                error: (error) => {
                   console.error('Error loading image:', error);
                   // Handle error or set a default image URL
-                }
-              );
+                },
+              });
           }
         });
       });
@@ -93,21 +102,63 @@ export class ForumThreadComponent implements OnInit, OnDestroy {
     this.forumService.createPost(newPost).subscribe({
       next: (response) => {
         this.newThreadTitle = '';
-        this.posts.unshift(response); // Add the new post at the beginning of the array
+
+        // Update the user's profile image URL in the response
+        if (response.userDto?.profileImageUrl) {
+          this.userService
+            .fetchImage(response.userDto.profileImageUrl)
+            .pipe(takeUntil(this.destroy$))
+            .subscribe(
+              (blob) => {
+                const objectURL = URL.createObjectURL(blob);
+                response.userDto!.profileImageUrl = objectURL;
+              },
+              (error) => {
+                console.error('Error loading image:', error);
+                // Handle error or set a default image URL
+              }
+            );
+        }
+
+        // Add the new post (with updated profile image) to the beginning of the array
+        this.posts.push(response);
+
         console.log('Post created successfully:', response);
       },
       error: (error) => {
         console.error('Error creating post:', error);
       },
     });
+
     this.showNewThreadForm = false;
   }
+
   nextPage() {
     throw new Error('Method not implemented.');
   }
   previousPage() {
     throw new Error('Method not implemented.');
   }
+  deletePost(post: PostDto) {
+    if (
+      post.id !== undefined &&
+      confirm('Are you sure you want to delete this post?')
+    ) {
+      this.forumService.deletePostById(post.id).subscribe({
+        next: () => {
+          this.posts = this.posts.filter((p) => p.id !== post.id);
+
+          console.log('Post deleted successfully');
+        },
+        error: (error) => {
+          console.error('Error deleting post:', error);
+        },
+      });
+    } else {
+      console.error('Post ID is undefined');
+    }
+  }
+
   handleImageError(event: any): void {
     event.target.src = 'path/to/default/image.jpg'; // Path to a default image
   }
