@@ -52,7 +52,13 @@ public class User {
     private Set<Event> events;
 
 
+    @JsonIgnore
+    @ManyToMany(mappedBy = "likedBy")
+    private Set<Comment> likedComments;
 
 
+    @JsonIgnore
+    @ManyToMany(mappedBy = "dislikedBy")
+    private Set<Comment> dislikedComments;
     private boolean isNotLocked;
 }

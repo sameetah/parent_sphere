@@ -15,6 +15,11 @@ import { FormsModule } from '@angular/forms';
 import { NotificationModule } from './notification.module';
 const routes: Routes = [
   {
+    path: '',
+    redirectTo: 'community',
+    pathMatch: 'full',
+  },
+  {
     path: 'user',
     loadChildren: () => import('./user/user.module').then((m) => m.UserModule),
   },

@@ -1,0 +1,42 @@
+<!-- dashboard.component.html -->
+<div class="bg-cream min-h-screen">
+  <!-- Header -->
+  <header class="bg-blue-dark text-white p-4 flex justify-between items-center">
+    <h1 class="text-xl font-sans">Parental Portal</h1>
+    <!-- Additional header content -->
+  </header>
+
+  <!-- User Profile Section -->
+  <section class="p-4 flex flex-col items-center">
+    <img
+      src="{{ userProfileImageUrl }}"
+      alt="Profile Image"
+      class="w-20 h-20 rounded-full mb-2"
+    />
+    <h2 class="text-2xl font-sans mb-1">{{ userName }}</h2>
+    <p class="font-sans">Role: {{ userRole }}</p>
+    <div class="flex mt-2">
+      <button class="bg-rose text-white p-2 rounded mr-2">Edit Profile</button>
+      <button class="bg-blue text-white p-2 rounded">Reset Password</button>
+    </div>
+  </section>
+
+  <!-- Main Content Area -->
+  <div class="p-4">
+    <h3 class="text-lg font-sans mb-2">Your Activities</h3>
+    <div class="flex mb-4">
+      <button class="bg-rose-dark text-white p-2 rounded mr-2">Posts</button>
+      <button class="bg-rose-dark text-white p-2 rounded mr-2">Comments</button>
+      <button class="bg-rose-dark text-white p-2 rounded">Events</button>
+    </div>
+    <!-- Dynamic content based on tab selection -->
+    <div>
+      <!-- Content for Posts, Comments, Events will be loaded here -->
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="bg-blue-dark text-white p-4 text-center font-sans">
+    Parental Portal © 2023
+  </footer>
+</div>
