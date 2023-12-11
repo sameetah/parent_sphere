@@ -23,7 +23,6 @@
         Update Profile Image
       </label>
 
-      <div *ngIf="fileName" class="mt-2">{{ fileName }}</div>
       <img
         *ngIf="user?.profileImageUrl"
         [src]="user?.profileImageUrl"

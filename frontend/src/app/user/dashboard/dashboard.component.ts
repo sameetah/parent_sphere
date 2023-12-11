@@ -87,6 +87,7 @@ export class DashboardComponent implements OnInit {
       this.sendNotification(NotificationType.ERROR, 'No file selected');
       return;
     }
+
     const formData = new FormData();
     formData.append('profileImage', this.profileImage);
     if (this.user) {
@@ -102,9 +103,12 @@ export class DashboardComponent implements OnInit {
             NotificationType.SUCCESS,
             'Image uploaded successfully'
           );
-          if (this.user && event.body?.profileImageUrl) {
-            this.user.profileImageUrl = event.body.profileImageUrl;
-            // No need to refresh the page, the image URL is updated
+
+          // Immediately update the user's profile image URL
+          if (this.user) {
+            const objectURL = URL.createObjectURL(this.profileImage);
+            this.user.profileImageUrl = objectURL;
+            this.fileName = '';
           }
         }
       },
