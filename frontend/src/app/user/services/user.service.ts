@@ -36,13 +36,13 @@ export class UserService {
 
   public resetPassword(email: string): Observable<CustomHttpRespone> {
     return this.http.get<CustomHttpRespone>(
-      `${this.host}/user/resetpassword/${email}`
+      `${this.host}/users/resetpassword/${email}`
     );
   }
 
   public updateProfileImage(formData: FormData): Observable<HttpEvent<User>> {
     return this.http.post<User>(
-      `${this.host}/user/updateProfileImage`,
+      `${this.host}/users/updateProfileImage`,
       formData,
       { reportProgress: true, observe: 'events' }
     );

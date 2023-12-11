@@ -1,38 +1,68 @@
-<!-- dashboard.component.html -->
 <div class="bg-cream min-h-screen">
   <!-- Header -->
   <header class="bg-blue-dark text-white p-4 flex justify-between items-center">
     <h1 class="text-xl font-sans">Parental Portal</h1>
     <!-- Additional header content -->
   </header>
+  <div class="w-20 h-20 mb-2">
+    <div class="custom-file">
+      <!-- Hidden file input -->
+      <input
+        type="file"
+        accept="image/*"
+        id="profile-image-input"
+        class="hidden"
+        (change)="onFileSelected($event)"
+      />
 
-  <!-- User Profile Section -->
+      <!-- Styled label as a button -->
+      <label
+        for="profile-image-input"
+        class="bg-blue-500 text-white p-2 rounded cursor-pointer"
+      >
+        Update Profile Image
+      </label>
+
+      <div *ngIf="fileName" class="mt-2">{{ fileName }}</div>
+      <img
+        *ngIf="user?.profileImageUrl"
+        [src]="user?.profileImageUrl"
+        class="w-20 h-20 rounded-full"
+      />
+    </div>
+  </div>
+
   <section class="p-4 flex flex-col items-center">
-    <img
-      src="{{ userProfileImageUrl }}"
-      alt="Profile Image"
-      class="w-20 h-20 rounded-full mb-2"
-    />
-    <h2 class="text-2xl font-sans mb-1">{{ userName }}</h2>
-    <p class="font-sans">Role: {{ userRole }}</p>
+    <h2 class="text-2xl font-sans mb-1">
+      {{ user?.firstName }} {{ user?.lastName }}
+    </h2>
+    <p class="font-sans">Role: {{ user?.role }}</p>
+    <p class="font-sans">Email: {{ user?.email }}</p>
+    <p class="font-sans">Username: {{ user?.username }}</p>
     <div class="flex mt-2">
       <button class="bg-rose text-white p-2 rounded mr-2">Edit Profile</button>
       <button class="bg-blue text-white p-2 rounded">Reset Password</button>
     </div>
   </section>
 
-  <!-- Main Content Area -->
   <div class="p-4">
     <h3 class="text-lg font-sans mb-2">Your Activities</h3>
     <div class="flex mb-4">
+      <!-- Activity Buttons -->
       <button class="bg-rose-dark text-white p-2 rounded mr-2">Posts</button>
       <button class="bg-rose-dark text-white p-2 rounded mr-2">Comments</button>
       <button class="bg-rose-dark text-white p-2 rounded">Events</button>
     </div>
-    <!-- Dynamic content based on tab selection -->
+    <!-- Dynamic Content -->
     <div>
-      <!-- Content for Posts, Comments, Events will be loaded here -->
+      <!-- Posts, Comments, Events content will be loaded here -->
     </div>
+  </div>
+  <div class="px-xl-3">
+    <button (click)="onLogOut()" class="btn btn-block btn-secondary">
+      <span>Logout</span>
+      <i class="fas fa-sign-in-alt ml-1"></i>
+    </button>
   </div>
 
   <!-- Footer -->
