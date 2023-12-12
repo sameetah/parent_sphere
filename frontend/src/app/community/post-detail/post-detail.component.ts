@@ -1,5 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { PostDto } from '../models/postDto';
+import { PostdetailDto } from '../models/postDetailDto';
 
 @Component({
   selector: 'app-post-detail',
@@ -11,6 +12,8 @@ export class PostDetailComponent implements OnInit {
     throw new Error('Method not implemented.');
   }
   @Input() post!: PostDto;
+
+  postDetail!: PostdetailDto;
 
   toggleLike(post: any): void {
     post.isLiked = !post.isLiked;
