@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { PostDto } from '../models/postDto';
-import { PostdetailDto } from '../models/postDetailDto';
+import { PostDetailDto } from '../models/postDetailDto';
 
 @Component({
   selector: 'app-post-detail',
@@ -13,7 +13,7 @@ export class PostDetailComponent implements OnInit {
   }
   @Input() post!: PostDto;
 
-  postDetail!: PostdetailDto;
+  postDetail!: PostDetailDto;
 
   toggleLike(post: any): void {
     post.isLiked = !post.isLiked;

@@ -1,4 +1,4 @@
-export interface PostdetailDto {
+export interface PostDetailDto {
   isLiked: any;
   isDisliked: any;
   id?: number;
