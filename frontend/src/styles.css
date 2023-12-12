@@ -2,3 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 @import "../node_modules/angular-notifier/styles.css";
+
+@layer utilities {
+  .hover\:after\:blur:hover::after {
+    content: "";
+    backdrop-filter: blur(5px);
+  }
+}
