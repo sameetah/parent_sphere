@@ -1,6 +1,6 @@
 export interface PostDetailDto {
-  isLiked: any;
-  isDisliked: any;
+  isLiked?: boolean;
+  isDisliked?: boolean;
   id?: number;
   content: string;
   postId: number;
