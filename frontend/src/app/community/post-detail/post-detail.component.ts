@@ -132,20 +132,16 @@ export class PostDetailComponent implements OnInit {
     this.postDetailService
       .likeComment(this.post.id, commentId, userId)
       .subscribe({
-        next: (response) => {
+        next: (updatedComment) => {
           let commentIndex = this.comments.findIndex((c) => c.id === commentId);
           if (commentIndex !== -1) {
-            const comment = this.comments[commentIndex];
-            if (comment) {
-              // Check if the comment is defined
-              comment.isLiked = !comment.isLiked;
-              comment.likesCount =
-                (comment.likesCount || 0) + (comment.isLiked ? 1 : -1);
-            }
+            this.comments[commentIndex] = updatedComment;
           }
-          console.log(response);
+          console.log(updatedComment);
         },
-        error: (error) => console.error('Error toggling like', error),
+        error: (error) => {
+          console.error('Error toggling like', error);
+        },
       });
   }
 }

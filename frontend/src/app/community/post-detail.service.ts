@@ -53,8 +53,8 @@ export class PostDetailService {
     postId: number,
     commentId: number,
     userId: number
-  ): Observable<string> {
-    return this.http.post<string>(
+  ): Observable<PostDetailDto> {
+    return this.http.post<PostDetailDto>(
       `${this.apiUrl}/${postId}/comments/${commentId}/likes?userId=${userId}`,
       {}
     );
@@ -64,8 +64,8 @@ export class PostDetailService {
     postId: number,
     commentId: number,
     userId: number
-  ): Observable<string> {
-    return this.http.post<string>(
+  ): Observable<PostDetailDto> {
+    return this.http.post<PostDetailDto>(
       `${this.apiUrl}/${postId}/comments/${commentId}/dislikes?userId=${userId}`,
       {}
     );

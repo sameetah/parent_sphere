@@ -15,6 +15,7 @@
 
 <!-- Like, Dislike, and Delete Buttons -->
 <div class="flex items-center space-x-4" *ngFor="let comment of comments">
+  <p>{{ comment.content }}</p>
   <button
     *ngIf="comment.id"
     (click)="toggleLike(comment.id)"
@@ -23,8 +24,8 @@
     <svg
       class="w-6 h-6"
       [ngClass]="{
-        'text-green-500': comment.isLiked,
-        'text-gray-500': !comment.isLiked
+        'text-green-500': comment.likesCount,
+        'text-gray-500': !comment.likesCount
       }"
       fill="none"
       stroke="currentColor"
@@ -42,14 +43,14 @@
   </button>
   <button
     *ngIf="comment.id"
-    (click)="toggleDislike(comment.id)"
+    (click)="toggleLike(comment.id)"
     class="flex items-center space-x-1"
   >
     <svg
       class="w-6 h-6"
       [ngClass]="{
-        'text-red-500': comment.isDisliked,
-        'text-gray-500': !comment.isDisliked
+        'text-red-500': comment.dislikesCount,
+        'text-gray-500': !comment.dislikesCount
       }"
       fill="none"
       stroke="currentColor"
