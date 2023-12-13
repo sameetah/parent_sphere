@@ -98,21 +98,17 @@ export class PostDetailComponent implements OnInit {
       console.error('Post ID is undefined');
       return;
     }
+
     this.postDetailService
       .dislikeComment(this.post.id, commentId, userId)
       .subscribe({
-        next: (response) => {
-          let commentIndex = this.comments.findIndex((c) => c.id === commentId);
+        next: (updatedComment) => {
+          const commentIndex = this.comments.findIndex(
+            (c) => c.id === commentId
+          );
           if (commentIndex !== -1) {
-            const comment = this.comments[commentIndex];
-            if (comment) {
-              // Check if the comment is defined
-              comment.isDisliked = !comment.isDisliked;
-              comment.dislikesCount =
-                (comment.dislikesCount || 0) + (comment.isDisliked ? 1 : -1);
-            }
+            this.comments[commentIndex] = updatedComment;
           }
-          console.log(response);
         },
         error: (error) => console.error('Error toggling dislike', error),
       });
