@@ -47,25 +47,25 @@ public class CommentController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> deleteComment(@PathVariable(value = "postId") Long postId,
+    public ResponseEntity<CommentDto> deleteComment(@PathVariable(value = "postId") Long postId,
                                                 @PathVariable(value = "id") Long commentId){
-        commentService.deleteComment(postId, commentId);
-        return new ResponseEntity<>("Comment deleted successfully", HttpStatus.OK);
+        CommentDto updatedComment = commentService.deleteComment(postId, commentId);
+        return new ResponseEntity<>(updatedComment, HttpStatus.OK);
     }
 
     @PostMapping("/{commentId}/likes")
-    public ResponseEntity<String> likeComment(@PathVariable(value = "postId") Long postId,
-                                              @PathVariable(value = "commentId") Long commentId,
-                                              @RequestParam(value = "userId") Long userId) {
-        commentService.likeComment(commentId, userId);
-        return new ResponseEntity<>("Comment liked successfully", HttpStatus.OK);
+    public ResponseEntity<CommentDto> likeComment(@PathVariable(value = "postId") Long postId,
+                                                  @PathVariable(value = "commentId") Long commentId,
+                                                  @RequestParam(value = "userId") Long userId) {
+        CommentDto updatedComment = commentService.likeComment(commentId, userId, postId);
+        return new ResponseEntity<>(updatedComment, HttpStatus.OK);
     }
 
     @PostMapping("/{commentId}/dislikes")
-    public ResponseEntity<String> dislikeComment(@PathVariable(value = "postId") Long postId,
+    public ResponseEntity<CommentDto> dislikeComment(@PathVariable(value = "postId") Long postId,
                                                  @PathVariable(value = "commentId") Long commentId,
                                                  @RequestParam(value = "userId") Long userId) {
-        commentService.dislikeComment(commentId, userId);
-        return new ResponseEntity<>("Comment disliked successfully", HttpStatus.OK);
+        CommentDto updatedComment = commentService.dislikeComment(commentId, userId);
+        return new ResponseEntity<>(updatedComment, HttpStatus.OK);
     }
 }

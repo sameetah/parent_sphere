@@ -11,13 +11,15 @@ import com.parentsphere.parentsphere.mappers.CommentMapper;
 import com.parentsphere.parentsphere.repositories.CommentRepository;
 import com.parentsphere.parentsphere.repositories.PostRepository;
 import com.parentsphere.parentsphere.repositories.UserRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Set;
 
+
+@Slf4j
 @Service
 public class CommentService {
     @Autowired
@@ -92,7 +94,7 @@ public class CommentService {
         return commentMapper.toDTO(updatedComment);
     }
 
-    public void deleteComment(Long postId, Long commentId) {
+    public CommentDto deleteComment(Long postId, Long commentId) {
         // retrieve post entity by id
         Post post = postRepository.findById(postId).orElseThrow(
                 () -> new ResourceNotFoundException("Post", "id", postId));
@@ -104,17 +106,29 @@ public class CommentService {
         if(!comment.getPost().getId().equals(post.getId())){
             throw new BlogAPIException(HttpStatus.BAD_REQUEST, "Comment does not belongs to post");
         }
+        CommentDto commentDto = commentMapper.toDTO(comment);
 
+        // Perform the deletion
         commentRepository.delete(comment);
+
+        // Return the CommentDto of the deleted comment
+        return commentDto;
     }
 
-    public void likeComment(Long commentId, Long userId) {
+    public CommentDto likeComment(Long commentId, Long userId, Long postId) {
         Comment comment = commentRepository.findById(commentId)
                 .orElseThrow(() -> new ResourceNotFoundException("Comment", "id", commentId));
 
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new ResourceNotFoundException("User", "id", userId));
 
+
+        Post post = postRepository.findById(postId).orElseThrow(
+                () -> new ResourceNotFoundException("Post", "id", postId));
+
+        if(!comment.getPost().getId().equals(post.getId())){
+            throw new BlogAPIException(HttpStatus.BAD_REQUEST, "Comment does not belongs to post");
+        }
         boolean liked = comment.getLikedBy().add(user); // Attempt to like
         if (!liked) {
             comment.getLikedBy().remove(user); // Undo like if already liked
@@ -122,11 +136,13 @@ public class CommentService {
 
         // Remove from dislikes if present
         comment.getDislikedBy().remove(user);
+        log.info("Comment: {}", comment.getLikesCount());
 
         commentRepository.save(comment);
+       return commentMapper.toDTO(comment);
     }
 
-    public void dislikeComment(Long commentId, Long userId) {
+    public CommentDto dislikeComment(Long commentId, Long userId) {
         Comment comment = commentRepository.findById(commentId)
                 .orElseThrow(() -> new ResourceNotFoundException("Comment", "id", commentId));
 
@@ -142,6 +158,7 @@ public class CommentService {
         comment.getLikedBy().remove(user);
 
         commentRepository.save(comment);
+        return commentMapper.toDTO(comment);
     }
 
     public List<CommentDto> getCommentsByPostId(Long postId) {

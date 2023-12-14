@@ -1,89 +1,95 @@
 <!-- Comment Box -->
-<div class="mb-4">
+<div class="mb-10 p-6 shadow-xl rounded-xl bg-cream">
   <textarea
-    class="w-full h-24 p-2 border rounded focus:outline-none focus:shadow-outline"
+    class="w-full h-24 p-4 mb-4 text-gray-700 bg-white rounded-lg shadow focus:outline-none focus:ring-2 focus:ring-blue-dark focus:border-transparent"
     placeholder="Write a comment..."
     [(ngModel)]="newCommentContent"
   ></textarea>
-  <button
-    class="bg-blue hover:bg-blue-dark text-white font-bold py-2 px-4 rounded mt-2"
-    (click)="createComment()"
-  >
-    Send Comment
-  </button>
+  <div class="flex justify-between">
+    <button
+      class="bg-blue hover:bg-blue-dark text-white font-semibold py-2 px-6 rounded-lg transition duration-300 ease-in-out shadow-md"
+      (click)="createComment()"
+    >
+      Send Comment
+    </button>
+    <span class="flex items-center text-sm text-gray-600 italic"
+      >Your thoughts matter!</span
+    >
+  </div>
 </div>
 
-<!-- Like, Dislike, and Delete Buttons -->
-<div class="flex items-center space-x-4" *ngFor="let comment of comments">
-  <p>{{ comment.content }}</p>
-  <button
-    *ngIf="comment.id"
-    (click)="toggleLike(comment.id)"
-    class="flex items-center space-x-1"
+<!-- Comments Display -->
+<div class="comments-container space-y-6">
+  <div
+    class="comment p-6 bg-white rounded-xl shadow transform transition duration-300 hover:shadow-lg"
+    *ngFor="let comment of comments"
   >
-    <svg
-      class="w-6 h-6"
-      [ngClass]="{
-        'text-green-500': comment.likesCount,
-        'text-gray-500': !comment.likesCount
-      }"
-      fill="none"
-      stroke="currentColor"
-      viewBox="0 0 24 24"
-      xmlns="http://www.w3.org/2000/svg"
-    >
-      <path
-        stroke-linecap="round"
-        stroke-linejoin="round"
-        stroke-width="2"
-        d="M5 15l7-7 7 7"
-      ></path>
-    </svg>
-    <span>{{ comment.likesCount }}</span>
-  </button>
-  <button
-    *ngIf="comment.id"
-    (click)="toggleDislike(comment.id)"
-    class="flex items-center space-x-1"
-  >
-    <svg
-      class="w-6 h-6"
-      [ngClass]="{
-        'text-red-500': comment.dislikesCount,
-        'text-gray-500': !comment.dislikesCount
-      }"
-      fill="none"
-      stroke="currentColor"
-      viewBox="0 0 24 24"
-      xmlns="http://www.w3.org/2000/svg"
-    >
-      <path
-        stroke-linecap="round"
-        stroke-linejoin="round"
-        stroke-width="2"
-        d="M19 9l-7 7-7-7"
-      ></path>
-    </svg>
-    <span>{{ comment.dislikesCount }}</span>
-  </button>
-  <button
-    (click)="deleteComment(comment.id)"
-    class="flex items-center space-x-1"
-  >
-    <svg
-      class="w-6 h-6 text-gray-600"
-      fill="none"
-      stroke="currentColor"
-      viewBox="0 0 24 24"
-      xmlns="http://www.w3.org/2000/svg"
-    >
-      <path
-        stroke-linecap="round"
-        stroke-linejoin="round"
-        stroke-width="2"
-        d="M6 18L18 6M6 6l12 12"
-      ></path>
-    </svg>
-    <span>Delete Comment</span>
-  </button>
+    <p class="comment-content mb-6 text-gray-800 font-semibold">
+      {{ comment.content }}
+    </p>
+    <div class="comment-actions flex justify-end space-x-4">
+      <button
+        *ngIf="comment.id"
+        (click)="toggleLike(comment.id)"
+        class="flex items-center space-x-2 text-blue"
+      >
+        <svg
+          class="icon w-6 h-6"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M5 15l7-7 7 7"
+          ></path>
+        </svg>
+        <span class="text-sm font-medium">{{ comment.likesCount }}</span>
+      </button>
+      <button
+        *ngIf="comment.id"
+        (click)="toggleDislike(comment.id)"
+        class="flex items-center space-x-2 text-rose"
+      >
+        <svg
+          class="icon w-6 h-6"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M19 9l-7 7-7-7"
+          ></path>
+        </svg>
+        <span class="text-sm font-medium">{{ comment.dislikesCount }}</span>
+      </button>
+      <button
+        class="flex items-center space-x-2 text-gray-600"
+        (click)="deleteComment(comment.id)"
+      >
+        <svg
+          class="icon w-6 h-6"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M6 18L18 6M6 6l12 12"
+          ></path>
+        </svg>
+        <span class="text-sm font-medium">Delete</span>
+      </button>
+    </div>
+  </div>
 </div>

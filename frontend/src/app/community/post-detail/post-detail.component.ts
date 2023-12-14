@@ -11,9 +11,6 @@ import { UserService } from 'src/app/user/services/user.service';
   styleUrls: ['./post-detail.component.css'],
 })
 export class PostDetailComponent implements OnInit {
-  deleteComment(arg0: number | undefined) {
-    throw new Error('Method not implemented.');
-  }
   @Input() post!: PostDto;
 
   postDetail!: PostDetailDto;
@@ -139,5 +136,30 @@ export class PostDetailComponent implements OnInit {
           console.error('Error toggling like', error);
         },
       });
+  }
+
+  deleteComment(commentId: number | undefined) {
+    if (commentId === undefined) {
+      console.error('Comment ID is undefined');
+      return;
+    }
+    if (this.post.id === undefined) {
+      console.error('Post ID is undefined');
+      return;
+    }
+
+    this.postDetailService.deleteComment(this.post.id, commentId).subscribe({
+      next: () => {
+        console.log('Comment deleted successfully');
+        // Remove the comment from the comments array
+        this.comments = this.comments.filter(
+          (comment) => comment.id !== commentId
+        );
+        console.log(this.comments);
+      },
+      error: (error) => {
+        console.error('Error deleting comment', error);
+      },
+    });
   }
 }

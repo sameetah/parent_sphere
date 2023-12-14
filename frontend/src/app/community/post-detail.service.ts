@@ -43,8 +43,8 @@ export class PostDetailService {
     );
   }
 
-  deleteComment(postId: number, commentId: number): Observable<string> {
-    return this.http.delete<string>(
+  deleteComment(postId: number, commentId: number): Observable<PostDetailDto> {
+    return this.http.delete<PostDetailDto>(
       `${this.apiUrl}/${postId}/comments/${commentId}`
     );
   }
