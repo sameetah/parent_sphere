@@ -14,6 +14,8 @@ public class CommentDto {
     private Long authorId;
     private int likesCount;
     private int dislikesCount;
+    private String profileImageUrl;
+    private String username;
 
 
 }

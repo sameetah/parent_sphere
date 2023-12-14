@@ -19,6 +19,8 @@ public interface CommentMapper {
     @Mapping(source = "author.id", target = "authorId")
     @Mapping(target = "likesCount", source = "likedBy", qualifiedByName = "likesCount")
     @Mapping(target = "dislikesCount", source = "dislikedBy", qualifiedByName = "dislikesCount")
+    @Mapping(source = "author.profileImageUrl", target = "profileImageUrl")
+    @Mapping(source = "author.username", target = "username")
     CommentDto toDTO(Comment comment);
 
     @Mapping(source = "postId", target = "post.id")

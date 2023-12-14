@@ -18,78 +18,59 @@
   </div>
 </div>
 
-<!-- Comments Display -->
 <div class="comments-container space-y-6">
   <div
-    class="comment p-6 bg-white rounded-xl shadow transform transition duration-300 hover:shadow-lg"
+    class="comment p-6 bg-white rounded-xl shadow"
     *ngFor="let comment of comments"
   >
-    <p class="comment-content mb-6 text-gray-800 font-semibold">
-      {{ comment.content }}
-    </p>
-    <div class="comment-actions flex justify-end space-x-4">
-      <button
-        *ngIf="comment.id"
-        (click)="toggleLike(comment.id)"
-        class="flex items-center space-x-2 text-blue"
-      >
-        <svg
-          class="icon w-6 h-6"
-          fill="none"
-          stroke="currentColor"
-          viewBox="0 0 24 24"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            stroke-width="2"
-            d="M5 15l7-7 7 7"
-          ></path>
-        </svg>
-        <span class="text-sm font-medium">{{ comment.likesCount }}</span>
-      </button>
-      <button
-        *ngIf="comment.id"
-        (click)="toggleDislike(comment.id)"
-        class="flex items-center space-x-2 text-rose"
-      >
-        <svg
-          class="icon w-6 h-6"
-          fill="none"
-          stroke="currentColor"
-          viewBox="0 0 24 24"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            stroke-width="2"
-            d="M19 9l-7 7-7-7"
-          ></path>
-        </svg>
-        <span class="text-sm font-medium">{{ comment.dislikesCount }}</span>
-      </button>
-      <button
-        class="flex items-center space-x-2 text-gray-600"
-        (click)="deleteComment(comment.id)"
-      >
-        <svg
-          class="icon w-6 h-6"
-          fill="none"
-          stroke="currentColor"
-          viewBox="0 0 24 24"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            stroke-width="2"
-            d="M6 18L18 6M6 6l12 12"
-          ></path>
-        </svg>
-        <span class="text-sm font-medium">Delete</span>
-      </button>
+    <div class="flex space-x-4">
+      <!-- User Avatar -->
+      <img
+        *ngIf="comment.profileImageUrl"
+        [src]="comment.profileImageUrl"
+        alt="User Avatar"
+        class="w-10 h-10 rounded-full object-cover"
+      />
+
+      <div class="flex-1">
+        <!-- Comment Content and User Info -->
+        <div class="flex justify-between items-center mb-2">
+          <p class="text-gray-800 font-semibold">{{ comment.content }}</p>
+          <span class="text-sm italic text-gray-600"
+            >Posted by: {{ comment.username }}</span
+          >
+        </div>
+
+        <!-- Comment Actions -->
+        <div class="comment-actions flex justify-end space-x-4">
+          <!-- Like Button -->
+          <button
+            *ngIf="comment.id"
+            (click)="toggleLike(comment.id)"
+            class="flex items-center space-x-2 text-blue"
+          >
+            <i class="fa-regular fa-thumbs-up"></i>
+            <span class="text-sm font-medium">{{ comment.likesCount }}</span>
+          </button>
+          <!-- Dislike Button -->
+          <button
+            *ngIf="comment.id"
+            (click)="toggleDislike(comment.id)"
+            class="flex items-center space-x-2 text-rose"
+          >
+            <i class="fa-regular fa-thumbs-down"></i>
+            <span class="text-sm font-medium">{{ comment.dislikesCount }}</span>
+          </button>
+          <!-- Delete Button -->
+          <button
+            (click)="deleteComment(comment.id)"
+            class="flex items-center space-x-2 text-gray-600"
+          >
+            <i class="fa fa-trash-alt"></i>
+            <span class="text-sm font-medium">Delete</span>
+          </button>
+        </div>
+      </div>
     </div>
   </div>
 </div>

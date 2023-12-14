@@ -4,6 +4,7 @@ import { PostDetailDto } from '../models/postDetailDto';
 import { PostDetailService } from '../post-detail.service';
 import { User } from 'src/app/user/models/user';
 import { UserService } from 'src/app/user/services/user.service';
+import { Subject, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-post-detail',
@@ -12,6 +13,7 @@ import { UserService } from 'src/app/user/services/user.service';
 })
 export class PostDetailComponent implements OnInit {
   @Input() post!: PostDto;
+  private destroy$ = new Subject<void>();
 
   postDetail!: PostDetailDto;
   comments: PostDetailDto[] = []; // Array to hold comments
@@ -36,11 +38,31 @@ export class PostDetailComponent implements OnInit {
 
     this.postDetailService.getCommentsByPostId(this.post.id).subscribe({
       next: (fetchedComments) => {
+        // First, map the fetched comments and assign them to this.comments
         this.comments = fetchedComments.map((comment) => ({
           ...comment,
           isLiked: false,
           isDisliked: false,
         }));
+
+        // Then, iterate over the mapped comments to fetch and set the profile image URLs
+        this.comments.forEach((comment) => {
+          if (comment.profileImageUrl) {
+            this.userService
+              .fetchImage(comment.profileImageUrl)
+              .pipe(takeUntil(this.destroy$))
+              .subscribe({
+                next: (blob) => {
+                  const objectURL = URL.createObjectURL(blob);
+                  comment.profileImageUrl = objectURL;
+                },
+                error: (error) => {
+                  console.error('Error loading image:', error);
+                  // Optionally set a default image URL here in case of error
+                },
+              });
+          }
+        });
       },
       error: (error) => console.error('Error fetching comments', error),
     });
@@ -76,6 +98,22 @@ export class PostDetailComponent implements OnInit {
 
     this.postDetailService.createComment(this.post.id, newComment).subscribe({
       next: (comment) => {
+        if (comment.profileImageUrl) {
+          this.userService
+            .fetchImage(comment.profileImageUrl)
+            .pipe(takeUntil(this.destroy$))
+            .subscribe({
+              next: (blob) => {
+                const objectURL = URL.createObjectURL(blob);
+                comment.profileImageUrl = objectURL;
+              },
+
+              error: (error) => {
+                console.error('Error loading image:', error);
+                // Handle error or set a default image URL
+              },
+            });
+        }
         console.log('Comment created', comment);
         this.comments.push(comment); // Add the new comment to the comments array
       },
@@ -83,8 +121,13 @@ export class PostDetailComponent implements OnInit {
     });
 
     this.newCommentContent = ''; // Reset the input field
+    console.log(this.comments);
   }
 
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
   toggleDislike(commentId: number): void {
     const userId = this.userService.getUserFromLocalCache()?.id;
     if (!userId) {

@@ -2,6 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 @import "../node_modules/angular-notifier/styles.css";
+@import "~@fortawesome/fontawesome-free/css/all.css";
 
 @layer utilities {
   .hover\:after\:blur:hover::after {
