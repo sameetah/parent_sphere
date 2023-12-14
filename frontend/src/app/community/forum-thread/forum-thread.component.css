@@ -1,0 +1,9 @@
+.bookmark-default {
+  color: #89abe3ff; /* Default color */
+  fill: none; /* No fill initially */
+}
+
+.bookmark-active {
+  color: #5078b3; /* Dark color for border */
+  fill: #89abe3ff; /* Fill with default color when active */
+}
