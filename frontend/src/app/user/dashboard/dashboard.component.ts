@@ -95,6 +95,7 @@ export class DashboardComponent implements OnInit {
     );
     this.posts.forEach((post) => {
       if (post.id) post.isBookmarked = this.bookmarkedPosts.has(post.id);
+      console.log(storedBookmarks);
     });
   }
 

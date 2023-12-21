@@ -25,7 +25,7 @@ export class ForumThreadComponent implements OnInit, OnDestroy {
     totalPages: 0,
     last: true,
   };
-  bookmarkedPosts!: Set<number>;
+  bookmarkedPosts: Set<number> = new Set();
   forumId!: number;
   posts: PostDto[] = [];
   showNewThreadForm = false;
@@ -41,6 +41,7 @@ export class ForumThreadComponent implements OnInit, OnDestroy {
   bookmarkPost(post: PostDto) {
     post.isBookmarked = !post.isBookmarked;
     if (post.isBookmarked && post.id) {
+      console.log(post.id);
       this.bookmarkedPosts.add(post.id);
     } else {
       if (post.id) this.bookmarkedPosts.delete(post.id);

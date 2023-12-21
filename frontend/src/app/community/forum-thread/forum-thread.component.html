@@ -61,15 +61,12 @@
         <!-- Action Buttons -->
         <div class="flex flex-col items-center ml-4 space-y-2">
           <!-- Bookmark Button -->
-          <button
-            (click)="bookmarkPost(post)"
-            class="text-gray-600 hover:text-blue-500 transition"
-          >
+          <button (click)="bookmarkPost(post)">
             <i
               class="fa-regular fa-bookmark"
               [ngClass]="{
-                'text-blue-500': post.isBookmarked,
-                'text-gray-600': !post.isBookmarked
+                'text-blue': post.isBookmarked,
+                'text-black': !post.isBookmarked
               }"
             ></i>
           </button>
@@ -81,28 +78,6 @@
             <!-- SVG or text for commenting -->
             <i class="fa-regular fa-comment"></i>
           </button>
-          <!-- forum-thread.component.html -->
-
-          <!-- Delete Button -->
-          <!--          <button
-            (click)="deletePost(post)"
-            class="text-gray-600 hover:text-red-500 transition"
-          >
-            <svg
-              class="w-6 h-6"
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M6 18L18 6M6 6l12 12"
-              />
-            </svg>
-          </button> -->
         </div>
       </div>
       <div *ngIf="selectedPostForComment" class="mt-4 relative">
