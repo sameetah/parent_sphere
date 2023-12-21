@@ -65,7 +65,13 @@
             (click)="bookmarkPost(post)"
             class="text-gray-600 hover:text-blue-500 transition"
           >
-            <i class="fa-regular fa-bookmark"></i>
+            <i
+              class="fa-regular fa-bookmark"
+              [ngClass]="{
+                'text-blue-500': post.isBookmarked,
+                'text-gray-600': !post.isBookmarked
+              }"
+            ></i>
           </button>
 
           <button

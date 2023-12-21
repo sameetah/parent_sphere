@@ -12,6 +12,10 @@ import { NotificationService } from '../services/notification.service';
 import { NotificationType } from '../enum/notification-type.enum';
 import { FileUploadStatus } from '../models/file-upload.status';
 import { Router } from '@angular/router';
+import { PostDto } from 'src/app/community/models/postDto';
+import { ForumService } from 'src/app/community/forum.service';
+import { PostResponse } from 'src/app/community/models/postResponse';
+import { PostDetailDto } from 'src/app/community/models/postDetailDto';
 
 @Component({
   selector: 'app-dashboard',
@@ -20,22 +24,35 @@ import { Router } from '@angular/router';
 })
 export class DashboardComponent implements OnInit {
   user!: User | null;
+
+  postResponse: PostResponse = {
+    content: [],
+    pageNo: 0,
+    pageSize: 0,
+    totalElements: 0,
+    totalPages: 0,
+    last: true,
+  };
+  posts!: PostDto[];
   public refreshing!: boolean;
   public fileName!: string;
   public profileImage!: File;
   subscriptions: any;
   profile!: string;
+  bookmarkedPosts!: Set<number>;
   public fileStatus = new FileUploadStatus();
 
   constructor(
     private userService: UserService,
     private authService: AuthenticationService,
+    private forumService: ForumService,
     private notificationService: NotificationService,
     private router: Router
   ) {}
   ngOnInit() {
     const user = this.authService.getUserFromLocalCache();
     this.user = user;
+    this.fetchPosts();
 
     if (user && user.profileImageUrl) {
       this.userService.fetchImage(user.profileImageUrl).subscribe({
@@ -55,6 +72,30 @@ export class DashboardComponent implements OnInit {
       console.log("User or user's profile image URL is not available.");
       // Set a default image URL or take other appropriate actions
     }
+  }
+
+  fetchPosts(): void {
+    this.forumService.getInitialPosts().subscribe({
+      next: (response: PostResponse) => {
+        this.postResponse = response;
+        this.posts = this.postResponse.content;
+        console.log(this.posts);
+        this.loadBookmarkedPosts();
+      },
+      error: (error) => {
+        console.error('Error loading initial posts:', error);
+      },
+    });
+  }
+
+  loadBookmarkedPosts() {
+    const storedBookmarks = localStorage.getItem('bookmarkedPosts');
+    this.bookmarkedPosts = new Set(
+      storedBookmarks ? JSON.parse(storedBookmarks) : []
+    );
+    this.posts.forEach((post) => {
+      if (post.id) post.isBookmarked = this.bookmarkedPosts.has(post.id);
+    });
   }
 
   private sendNotification(

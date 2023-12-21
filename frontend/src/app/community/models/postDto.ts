@@ -1,6 +1,7 @@
 import { UserDto } from './userDto';
 
 export interface PostDto {
+  isBookmarked?: any;
   id?: number;
   content: string;
   date?: Date | string;

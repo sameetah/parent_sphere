@@ -1,8 +1,9 @@
+import { PostDto } from 'src/app/community/models/postDto';
 import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { PostResponse } from '../models/postResponse';
 import { ForumService } from '../forum.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { PostDto } from '../models/postDto';
+
 import { UserService } from 'src/app/user/services/user.service';
 import { Subject, takeUntil } from 'rxjs';
 import { NotificationService } from 'src/app/user/services/notification.service';
@@ -15,9 +16,6 @@ import { NotificationService } from 'src/app/user/services/notification.service'
 export class ForumThreadComponent implements OnInit, OnDestroy {
   selectedPostForComment!: PostDto | null;
 
-  bookmarkPost(_t23: PostDto) {
-    throw new Error('Method not implemented.');
-  }
   private destroy$ = new Subject<void>();
   postResponse: PostResponse = {
     content: [],
@@ -27,7 +25,7 @@ export class ForumThreadComponent implements OnInit, OnDestroy {
     totalPages: 0,
     last: true,
   };
-
+  bookmarkedPosts!: Set<number>;
   forumId!: number;
   posts: PostDto[] = [];
   showNewThreadForm = false;
@@ -39,6 +37,19 @@ export class ForumThreadComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private notificationService: NotificationService
   ) {}
+
+  bookmarkPost(post: PostDto) {
+    post.isBookmarked = !post.isBookmarked;
+    if (post.isBookmarked && post.id) {
+      this.bookmarkedPosts.add(post.id);
+    } else {
+      if (post.id) this.bookmarkedPosts.delete(post.id);
+    }
+    localStorage.setItem(
+      'bookmarkedPosts',
+      JSON.stringify(Array.from(this.bookmarkedPosts))
+    );
+  }
   commentOnPost(post: PostDto): void {
     this.selectedPostForComment = post;
     console.log('Selected post for comment:', this.selectedPostForComment);
